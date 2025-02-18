@@ -19,7 +19,7 @@ class ToDoList:
             with open(self._json_name, "r", encoding="utf-8") as file:
                 data = json.load(file)
                 self._tasks = {
-                    uid: Task.from_dict(task_data) for uid, task_data in data.items()
+                    uid: Task(**task_data) for uid, task_data in data.items()
                 }
 
     def _save_json(self) -> None:

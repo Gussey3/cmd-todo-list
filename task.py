@@ -27,12 +27,3 @@ class Task:
         :return: словарь uid, text, is_done
         """
         return asdict(self)
-
-    @staticmethod
-    def from_dict(data: dict) -> "Task":
-        """
-        Создать задачу из словаря
-        :param data: словарь
-        :return: задача
-        """
-        return Task(**data)
