@@ -1,9 +1,13 @@
-from todolist import ToDoList
-
-
 class ConsoleControl:
-    def __init__(self):
-        self.todo = ToDoList()
+    """
+    Класс для управления приложением через консоль
+    """
+
+    def __init__(self, todo_list: "ToDoList") -> None:
+        """
+        :param todo_list: объект класса ToDoList
+        """
+        self.todo = todo_list
 
     def print_menu(self) -> None:
         """
