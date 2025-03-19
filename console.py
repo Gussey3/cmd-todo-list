@@ -1,9 +1,16 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from itodolist import IToDoList
+
+
 class ConsoleControl:
     """
-    Класс для управления приложением через консоль
+    Менеджер для управления приложением через консоль
     """
 
-    def __init__(self, todo_list: "ToDoList") -> None:
+    def __init__(self, todo_list: IToDoList) -> None:
         """
         :param todo_list: объект класса ToDoList
         """

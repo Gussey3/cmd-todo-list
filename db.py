@@ -1,11 +1,15 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from functools import lru_cache
+from pathlib import Path
 from os import getenv
 from dotenv import load_dotenv
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from pydantic import PostgresDsn
 
-load_dotenv("ci/.env")
+load_dotenv(Path(".env"))
 
 
+@lru_cache()
 def get_database_url() -> str:
     """
     Получить url базы данных
@@ -16,8 +20,10 @@ def get_database_url() -> str:
     host = getenv("POSTGRES_HOST")
     port = getenv("POSTGRES_PORT")
     db = getenv("POSTGRES_DB")
+    schema = getenv("SCHEMA")
 
-    return f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{db}"
+    dsn = PostgresDsn(f"{schema}://{user}:{password}@{host}:{port}/{db}")
+    return str(dsn)
 
 
 engine = create_engine(get_database_url())

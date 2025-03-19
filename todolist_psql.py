@@ -1,12 +1,13 @@
 from uuid import UUID
 
-from models import Task
+from itodolist import IToDoList
+from models.task import Task
 from db import SessionLocal
 
 
-class ToDoList:
+class ToDoListPsql(IToDoList):
     """
-    Класс для работы с to-do листом
+    Менеджер для работы с to-do листом используя postgresql
     """
 
     def add_task(self, text: str) -> None:
@@ -59,7 +60,7 @@ class ToDoList:
     def get_tasks(self):
         """
         Получить все задачи
-        :return: генератор uid, text, is_done
+        :return: генератор uid, text, done
         """
         with SessionLocal() as session:
             tasks = session.query(Task).all()
