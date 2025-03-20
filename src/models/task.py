@@ -3,7 +3,7 @@ from uuid import uuid4
 from sqlalchemy import Column, String, Boolean
 from sqlalchemy.dialects.postgresql import UUID
 
-from models.base import Base
+from src.models.base import Base
 
 
 class Task(Base):

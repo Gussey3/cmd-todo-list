@@ -1,8 +1,8 @@
 from os import getenv
 
 from console import ConsoleControl
-from todolist_psql import ToDoListPsql
-from todolist_json import ToDoListJson
+from src.implementations.todolist_psql.todolist_psql import ToDoListPsql
+from src.implementations.todolist_json.todolist_json import ToDoListJson
 
 
 if __name__ == "__main__":

@@ -1,8 +1,8 @@
 from uuid import UUID
 
-from itodolist import IToDoList
-from models.task import Task
-from db import SessionLocal
+from src.interfaces.itodolist import IToDoList
+from src.models.task import Task
+from src.db import SessionLocal
 
 
 class ToDoListPsql(IToDoList):

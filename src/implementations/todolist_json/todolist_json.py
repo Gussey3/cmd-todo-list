@@ -3,8 +3,8 @@ import os
 from dataclasses import asdict
 from uuid import uuid4
 
-from itodolist import IToDoList
-from task_json import TaskJson
+from src.interfaces.itodolist import IToDoList
+from src.implementations.todolist_json.task_json import TaskJson
 
 
 class ToDoListJson(IToDoList):
