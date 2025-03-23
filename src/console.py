@@ -1,9 +1,20 @@
-from todolist import ToDoList
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from src.interfaces.itodolist import IToDoList
 
 
 class ConsoleControl:
-    def __init__(self):
-        self.todo = ToDoList()
+    """
+    Менеджер для управления приложением через консоль
+    """
+
+    def __init__(self, todo_list: IToDoList) -> None:
+        """
+        :param todo_list: объект класса ToDoList
+        """
+        self.todo = todo_list
 
     def print_menu(self) -> None:
         """

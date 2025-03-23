@@ -1,12 +1,18 @@
 import json
 import os
+from dataclasses import asdict
 from uuid import uuid4
 
-from task import Task
+from src.interfaces.itodolist import IToDoList
+from src.implementations.todolist_json.task_json import TaskJson
 
 
-class ToDoList:
-    def __init__(self):
+class ToDoListJson(IToDoList):
+    """
+    Менеджер для работы с to-do листом используя JSON
+    """
+
+    def __init__(self) -> None:
         self._tasks = {}
         self._json_name = "data.json"
         self._load_json()
@@ -19,7 +25,7 @@ class ToDoList:
             with open(self._json_name, "r", encoding="utf-8") as file:
                 data = json.load(file)
                 self._tasks = {
-                    uid: Task(**task_data) for uid, task_data in data.items()
+                    uid: TaskJson(**task_data) for uid, task_data in data.items()
                 }
 
     def _save_json(self) -> None:
@@ -28,7 +34,7 @@ class ToDoList:
         """
         with open(self._json_name, "w", encoding="utf-8") as file:
             json.dump(
-                {uid: task.to_dict() for uid, task in self._tasks.items()},
+                {uid: asdict(task) for uid, task in self._tasks.items()},
                 file,
                 ensure_ascii=False,
             )
@@ -39,7 +45,7 @@ class ToDoList:
         :param text: текст задачи
         """
         uid = str(uuid4())
-        task = Task(uid, text)
+        task = TaskJson(uid, text)
         self._tasks[uid] = task
         self._save_json()
 
@@ -51,7 +57,7 @@ class ToDoList:
         """
         if uid not in self._tasks:
             raise KeyError("There is no task with this uid")
-        self._tasks[uid].edit_text(text)
+        self._tasks[uid].text = text
         self._save_json()
 
     def mark_done(self, uid: str) -> None:
@@ -61,7 +67,7 @@ class ToDoList:
         """
         if uid not in self._tasks:
             raise KeyError("There is no task with this uid")
-        self._tasks[uid].mark_done(True)
+        self._tasks[uid].done = True
         self._save_json()
 
     def delete_task(self, uid: str) -> None:
@@ -77,7 +83,7 @@ class ToDoList:
     def get_tasks(self):
         """
         Получить все задачи
-        :return: генератор uid, text, is_done
+        :return: генератор uid, text, done
         """
         for uid, task in self._tasks.items():
-            yield uid, task.text, task.is_done
+            yield uid, task.text, task.done
