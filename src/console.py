@@ -22,10 +22,10 @@ class ConsoleControl:
         """
         while True:
             try:
-                command = input("Enter command: ")
+                command = input("Введите команду: ")
                 if command == "get-tasks":
-                    for uid, text, is_done in self.todo.get_tasks():
-                        print(f"uid: {uid}\t text: {text}\t done: {is_done}")
+                    for uid, description, is_completed in self.todo.get_tasks():
+                        print(f"uid: {uid}\t description: {description}\t is_completed: {is_completed}")
                 elif command == "add-task":
                     text = input("text: ")
                     self.todo.add_task(text)
@@ -35,14 +35,14 @@ class ConsoleControl:
                     self.todo.edit_task(uid, text)
                 elif command == "mark-done":
                     uid = input("uid: ")
-                    self.todo.mark_done(uid)
+                    self.todo.mark_completed(uid)
                 elif command == "delete-task":
                     uid = input("uid: ")
                     self.todo.delete_task(uid)
                 elif command == "exit":
                     break
                 else:
-                    print("There is no such command")
+                    print("Нет такой команды")
 
             except Exception as e:
-                print(f"Error: {e}")
+                print(f"Ошибка: {e}")

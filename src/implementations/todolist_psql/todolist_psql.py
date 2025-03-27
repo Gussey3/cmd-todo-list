@@ -1,5 +1,6 @@
 from uuid import UUID
 
+from src.exceptions.todolist_exceptions import TaskExistException
 from src.interfaces.itodolist import IToDoList
 from src.models.task import Task
 from src.db import SessionLocal
@@ -16,44 +17,44 @@ class ToDoListPsql(IToDoList):
         :param text: текст задачи
         """
         with SessionLocal() as session:
-            task = Task(text=text)
+            task = Task(description=text)
             session.add(task)
             session.commit()
 
-    def edit_task(self, uid: str, text: str) -> None:
+    def edit_task(self, uid: UUID, text: str) -> None:
         """
         Редактировать текст задачи
         :param uid: uid задачи
         :param text: новый текст
         """
         with SessionLocal() as session:
-            task = session.get(Task, UUID(uid))
+            task = session.get(Task, uid)
             if not task:
-                raise KeyError("There is no task with this uid")
-            task.text = text
+                raise TaskExistException
+            task.description = text
             session.commit()
 
-    def mark_done(self, uid: str) -> None:
+    def mark_completed(self, uid: UUID) -> None:
         """
         Пометить задачу выполненной
         :param uid: uid задачи
         """
         with SessionLocal() as session:
-            task = session.get(Task, UUID(uid))
+            task = session.get(Task, uid)
             if not task:
-                raise KeyError("There is no task with this uid")
-            task.done = True
+                raise TaskExistException
+            task.is_completed = True
             session.commit()
 
-    def delete_task(self, uid: str) -> None:
+    def delete_task(self, uid: UUID) -> None:
         """
         Удалить задачу
         :param uid: uid задачи
         """
         with SessionLocal() as session:
-            task = session.get(Task, UUID(uid))
+            task = session.get(Task, uid)
             if not task:
-                raise KeyError("There is no task with this uid")
+                raise TaskExistException
             session.delete(task)
             session.commit()
 
@@ -66,4 +67,4 @@ class ToDoListPsql(IToDoList):
             tasks = session.query(Task).all()
 
             for task in tasks:
-                yield task.id, task.text, task.done
+                yield task.id, task.description, task.is_completed

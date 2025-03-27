@@ -13,6 +13,6 @@ class Task(Base):
 
     __tablename__ = "tasks"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
-    text = Column(String)
-    done = Column(Boolean, default=False)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4, comment="Уникальный идентификатор задачи")
+    description = Column(String, comment="Описание задачи")
+    is_completed = Column(Boolean, default=False, comment="Флаг выполненности задачи")
