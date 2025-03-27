@@ -57,17 +57,17 @@ class ToDoListJson(IToDoList):
         """
         if uid not in self._tasks:
             raise KeyError("There is no task with this uid")
-        self._tasks[uid].text = text
+        self._tasks[uid].description = text
         self._save_json()
 
-    def mark_done(self, uid: str) -> None:
+    def mark_completed(self, uid: str) -> None:
         """
         Пометить задачу выполненной
         :param uid: uid задачи
         """
         if uid not in self._tasks:
             raise KeyError("There is no task with this uid")
-        self._tasks[uid].done = True
+        self._tasks[uid].is_completed = True
         self._save_json()
 
     def delete_task(self, uid: str) -> None:
@@ -86,4 +86,4 @@ class ToDoListJson(IToDoList):
         :return: генератор uid, text, done
         """
         for uid, task in self._tasks.items():
-            yield uid, task.text, task.done
+            yield uid, task.description, task.is_completed

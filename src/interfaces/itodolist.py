@@ -24,7 +24,7 @@ class IToDoList(ABC):
         pass
 
     @abstractmethod
-    def mark_done(self, uid: str) -> None:
+    def mark_completed(self, uid: str) -> None:
         """
         Пометить задачу выполненной
         :param uid: uid задачи

@@ -1,30 +1,30 @@
-from functools import lru_cache
+from functools import cached_property
 from pathlib import Path
-from os import getenv
-from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from pydantic import PostgresDsn
-
-load_dotenv(Path(".env"))
-
-
-@lru_cache()
-def get_database_url() -> str:
-    """
-    Получить url базы данных
-    :return: url базы данных
-    """
-    user = getenv("POSTGRES_USER")
-    password = getenv("POSTGRES_PASSWORD")
-    host = getenv("POSTGRES_HOST")
-    port = getenv("POSTGRES_PORT")
-    db = getenv("POSTGRES_DB")
-    schema = getenv("SCHEMA")
-
-    dsn = PostgresDsn(f"{schema}://{user}:{password}@{host}:{port}/{db}")
-    return str(dsn)
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-engine = create_engine(get_database_url())
+class Settings(BaseSettings):
+    postgres_user: str
+    postgres_password: str
+    postgres_host: str
+    postgres_port: str
+    postgres_db: str
+    schema: str
+    db_source: str
+
+    @cached_property
+    def database_url(self) -> str:
+        dsn = PostgresDsn(
+            f"{self.schema}://{self.postgres_user}:{self.postgres_password}@{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
+        )
+        return str(dsn)
+
+    model_config = SettingsConfigDict(env_file=Path(".env"))
+
+
+settings = Settings()
+engine = create_engine(settings.database_url)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

@@ -3,12 +3,11 @@ from os import getenv
 from console import ConsoleControl
 from src.implementations.todolist_psql.todolist_psql import ToDoListPsql
 from src.implementations.todolist_json.todolist_json import ToDoListJson
+from db import settings
 
 
 if __name__ == "__main__":
-    db_source = getenv("DB_SOURCE")
-
-    match db_source:
+    match settings.db_source:
         case "psql":
             todo_list = ToDoListPsql()
         case "json":

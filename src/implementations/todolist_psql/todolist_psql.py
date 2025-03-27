@@ -16,7 +16,7 @@ class ToDoListPsql(IToDoList):
         :param text: текст задачи
         """
         with SessionLocal() as session:
-            task = Task(text=text)
+            task = Task(description=text)
             session.add(task)
             session.commit()
 
@@ -30,10 +30,10 @@ class ToDoListPsql(IToDoList):
             task = session.get(Task, UUID(uid))
             if not task:
                 raise KeyError("There is no task with this uid")
-            task.text = text
+            task.description = text
             session.commit()
 
-    def mark_done(self, uid: str) -> None:
+    def mark_completed(self, uid: str) -> None:
         """
         Пометить задачу выполненной
         :param uid: uid задачи
@@ -42,7 +42,7 @@ class ToDoListPsql(IToDoList):
             task = session.get(Task, UUID(uid))
             if not task:
                 raise KeyError("There is no task with this uid")
-            task.done = True
+            task.is_completed = True
             session.commit()
 
     def delete_task(self, uid: str) -> None:
@@ -66,4 +66,4 @@ class ToDoListPsql(IToDoList):
             tasks = session.query(Task).all()
 
             for task in tasks:
-                yield task.id, task.text, task.done
+                yield task.id, task.description, task.is_completed

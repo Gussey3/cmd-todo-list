@@ -35,7 +35,7 @@ class ConsoleControl:
                     self.todo.edit_task(uid, text)
                 elif command == "mark-done":
                     uid = input("uid: ")
-                    self.todo.mark_done(uid)
+                    self.todo.mark_completed(uid)
                 elif command == "delete-task":
                     uid = input("uid: ")
                     self.todo.delete_task(uid)
