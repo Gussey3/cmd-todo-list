@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from src.exceptions.todolist_exceptions import TaskExistException
+from src.exceptions.todolist_exceptions import TaskNotExistError
 from src.interfaces.itodolist import IToDoList
 from src.models.task import Task
 from src.db import SessionLocal
@@ -11,15 +11,18 @@ class ToDoListPsql(IToDoList):
     Менеджер для работы с to-do листом используя postgresql
     """
 
-    def add_task(self, text: str) -> None:
+    def add_task(self, text: str) -> Task:
         """
         Создать новую задачу
         :param text: текст задачи
+        :return: таск
         """
         with SessionLocal() as session:
             task = Task(description=text)
             session.add(task)
             session.commit()
+            session.refresh(task)
+            return task
 
     def edit_task(self, uid: UUID, text: str) -> None:
         """
@@ -30,7 +33,7 @@ class ToDoListPsql(IToDoList):
         with SessionLocal() as session:
             task = session.get(Task, uid)
             if not task:
-                raise TaskExistException
+                raise TaskNotExistError
             task.description = text
             session.commit()
 
@@ -42,7 +45,7 @@ class ToDoListPsql(IToDoList):
         with SessionLocal() as session:
             task = session.get(Task, uid)
             if not task:
-                raise TaskExistException
+                raise TaskNotExistError
             task.is_completed = True
             session.commit()
 
@@ -54,7 +57,7 @@ class ToDoListPsql(IToDoList):
         with SessionLocal() as session:
             task = session.get(Task, uid)
             if not task:
-                raise TaskExistException
+                raise TaskNotExistError
             session.delete(task)
             session.commit()
 

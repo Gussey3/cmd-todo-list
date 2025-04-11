@@ -1,20 +1,29 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
+from uuid import UUID
+
+from src.interfaces.iapi import IApi
 
 if TYPE_CHECKING:
     from src.interfaces.itodolist import IToDoList
 
 
-class ConsoleControl:
+class ConsoleControl(IApi):
     """
     Менеджер для управления приложением через консоль
     """
 
     def __init__(self, todo_list: IToDoList) -> None:
         """
-        :param todo_list: объект класса ToDoList
+        :param todo_list: реализация IToDoList
         """
-        self.todo = todo_list
+        super().__init__(todo_list)
+
+    def run(self) -> None:
+        """
+        Запуск приложения
+        """
+        self.print_menu()
 
     def print_menu(self) -> None:
         """
@@ -30,14 +39,14 @@ class ConsoleControl:
                     text = input("text: ")
                     self.todo.add_task(text)
                 elif command == "edit-task":
-                    uid = input("uid: ")
+                    uid = UUID(input("uid: "))
                     text = input("text: ")
                     self.todo.edit_task(uid, text)
                 elif command == "mark-done":
-                    uid = input("uid: ")
+                    uid = UUID(input("uid: "))
                     self.todo.mark_completed(uid)
                 elif command == "delete-task":
-                    uid = input("uid: ")
+                    uid = UUID(input("uid: "))
                     self.todo.delete_task(uid)
                 elif command == "exit":
                     break

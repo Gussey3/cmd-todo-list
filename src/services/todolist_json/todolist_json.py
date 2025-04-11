@@ -4,7 +4,7 @@ from dataclasses import asdict
 from uuid import uuid4, UUID
 
 from src.interfaces.itodolist import IToDoList
-from src.implementations.todolist_json.task_json import TaskJson
+from src.services.todolist_json.task_json import TaskJson
 
 
 class ToDoListJson(IToDoList):

@@ -1,3 +1,8 @@
-class TaskExistException(Exception):
+class TaskNotExistError(Exception):
     def __str__(self):
-        return f"Отстутствует таск с таким uid"
+        return "Отсутствует таск с таким uid"
+
+
+class ToDoListNotInitializedError(Exception):
+    def __str__(self):
+        return "Не инициализирован todo list"
