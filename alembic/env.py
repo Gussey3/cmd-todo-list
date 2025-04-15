@@ -25,9 +25,9 @@ target_metadata = Base.metadata
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
-from src.db import settings
+from src.config.db_settings import db_settings
 
-config.set_main_option("sqlalchemy.url", settings.database_url)
+config.set_main_option("sqlalchemy.url", db_settings.database_url)
 
 
 def run_migrations_offline() -> None:

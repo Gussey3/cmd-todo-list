@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from uuid import UUID
 
 
-class IToDoList(ABC):
+class IDBManager(ABC):
     """
     Интерфейс менеджера для работы с to-do листом
     """

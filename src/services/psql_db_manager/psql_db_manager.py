@@ -1,12 +1,12 @@
 from uuid import UUID
 
 from src.exceptions.todolist_exceptions import TaskNotExistError
-from src.interfaces.itodolist import IToDoList
+from src.interfaces.idbmanager import IDBManager
 from src.models.task import Task
 from src.db import SessionLocal
 
 
-class ToDoListPsql(IToDoList):
+class PsqlDBManager(IDBManager):
     """
     Менеджер для работы с to-do листом используя postgresql
     """

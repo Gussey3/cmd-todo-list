@@ -2,8 +2,8 @@ import uvicorn
 from fastapi import FastAPI
 
 from src.interfaces.iapi import IApi
-from src.interfaces.itodolist import IToDoList
-from src.web.routers.todo_router import router
+from src.interfaces.idbmanager import IDBManager
+from src.api.routers.todo_router import router
 
 app = FastAPI()
 app.include_router(router)
@@ -13,7 +13,7 @@ class FastApiControl(IApi):
     """
     Менеджер для управления приложением через fastapi
     """
-    def __init__(self, todo_list: IToDoList) -> None:
+    def __init__(self, todo_list: IDBManager) -> None:
         """
         :param todo_list: реализация IToDoList
         """
