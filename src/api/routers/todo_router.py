@@ -1,12 +1,11 @@
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from typing import List
 
 from src.dependencies.todolist import get_todo_list
 from src.interfaces.idbmanager import IDBManager
 from src.api.schemas.task import TaskSchema, NewTaskSchema
-from src.exceptions.todolist_exceptions import TaskNotExistError
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
 
@@ -25,17 +24,14 @@ def get_tasks(todo: IDBManager = Depends(get_todo_list)):
     ]
     return tasks
 
+
 @router.put("/{task_id}")
-def edit_task(task_id: str, task_body: NewTaskSchema, todo: IDBManager = Depends(get_todo_list)):
-    try:
-        todo.edit_task(UUID(task_id), text=task_body.description)
-    except TaskNotExistError:
-        raise HTTPException(status_code=404, detail="task not found")
+def edit_task(
+    task_id: str, task_body: NewTaskSchema, todo: IDBManager = Depends(get_todo_list)
+):
+    todo.edit_task(UUID(task_id), text=task_body.description)
 
 
 @router.delete("/{task_id}")
 def delete_task(task_id: str, todo: IDBManager = Depends(get_todo_list)):
-    try:
-        todo.delete_task(UUID(task_id))
-    except TaskNotExistError:
-        raise HTTPException(status_code=404, detail="task not found")
+    todo.delete_task(UUID(task_id))
