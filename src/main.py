@@ -1,20 +1,28 @@
-from os import getenv
-
-from console import ConsoleControl
-from src.implementations.todolist_psql.todolist_psql import ToDoListPsql
-from src.implementations.todolist_json.todolist_json import ToDoListJson
+from src.api.console_control import ConsoleControl
+from src.api.fastapi_control import FastApiControl
+from src.services.psql_todolist_manager.psql_todolist_manager import PsqlToDoListManager
+from src.services.json_todolist_manager.json_todolist_manager import JsonToDoListManager
+from src.dependencies import todolist as deps
+from src.config.app_settings import app_settings
 
 
 if __name__ == "__main__":
-    db_source = getenv("DB_SOURCE")
-
-    match db_source:
+    match app_settings.db_source:
         case "psql":
-            todo_list = ToDoListPsql()
+            manager = PsqlToDoListManager()
         case "json":
-            todo_list = ToDoListJson()
+            manager = JsonToDoListManager()
         case _:
             raise ValueError("DB_SOURCE should be psql or json")
 
-    cc = ConsoleControl(todo_list)
-    cc.print_menu()
+    match app_settings.app_api:
+        case "fastapi":
+            control = FastApiControl(manager)
+        case "console":
+            control = ConsoleControl(manager)
+        case _:
+            raise ValueError("API should be fastapi or console")
+
+    deps.todo_list = manager
+
+    control.run()

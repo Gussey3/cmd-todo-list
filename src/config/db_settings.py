@@ -1,0 +1,27 @@
+from functools import cached_property
+from pathlib import Path
+
+from pydantic import PostgresDsn
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class DBSettings(BaseSettings):
+    postgres_user: str
+    postgres_password: str
+    postgres_host: str
+    postgres_port: str
+    postgres_db: str
+    schema: str
+    db_source: str
+
+    @cached_property
+    def database_url(self) -> str:
+        dsn = PostgresDsn(
+            f"{self.schema}://{self.postgres_user}:{self.postgres_password}@{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
+        )
+        return str(dsn)
+
+    model_config = SettingsConfigDict(env_file=Path(".env"), extra="ignore")
+
+
+db_settings = DBSettings()

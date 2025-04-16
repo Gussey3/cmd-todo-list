@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
+from uuid import UUID
 
 
-class IToDoList(ABC):
+class IToDoListManager(ABC):
     """
     Интерфейс менеджера для работы с to-do листом
     """
@@ -15,7 +16,7 @@ class IToDoList(ABC):
         pass
 
     @abstractmethod
-    def edit_task(self, uid: str, text: str) -> None:
+    def edit_task(self, uid: UUID, text: str) -> None:
         """
         Редактировать текст задачи
         :param uid: uid задачи
@@ -24,7 +25,7 @@ class IToDoList(ABC):
         pass
 
     @abstractmethod
-    def mark_done(self, uid: str) -> None:
+    def mark_completed(self, uid: UUID) -> None:
         """
         Пометить задачу выполненной
         :param uid: uid задачи
@@ -32,7 +33,7 @@ class IToDoList(ABC):
         pass
 
     @abstractmethod
-    def delete_task(self, uid: str) -> None:
+    def delete_task(self, uid: UUID) -> None:
         """
         Удалить задачу
         :param uid: uid задачи

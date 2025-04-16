@@ -1,13 +1,13 @@
 import json
 import os
 from dataclasses import asdict
-from uuid import uuid4
+from uuid import uuid4, UUID
 
-from src.interfaces.itodolist import IToDoList
-from src.implementations.todolist_json.task_json import TaskJson
+from src.interfaces.itodolistmanager import IToDoListManager
+from src.services.json_todolist_manager.task_json import TaskJson
 
 
-class ToDoListJson(IToDoList):
+class JsonToDoListManager(IToDoListManager):
     """
     Менеджер для работы с to-do листом используя JSON
     """
@@ -49,7 +49,7 @@ class ToDoListJson(IToDoList):
         self._tasks[uid] = task
         self._save_json()
 
-    def edit_task(self, uid: str, text: str) -> None:
+    def edit_task(self, uid: UUID, text: str) -> None:
         """
         Редактировать текст задачи
         :param uid: uid задачи
@@ -57,20 +57,20 @@ class ToDoListJson(IToDoList):
         """
         if uid not in self._tasks:
             raise KeyError("There is no task with this uid")
-        self._tasks[uid].text = text
+        self._tasks[uid].description = text
         self._save_json()
 
-    def mark_done(self, uid: str) -> None:
+    def mark_completed(self, uid: UUID) -> None:
         """
         Пометить задачу выполненной
         :param uid: uid задачи
         """
         if uid not in self._tasks:
             raise KeyError("There is no task with this uid")
-        self._tasks[uid].done = True
+        self._tasks[uid].is_completed = True
         self._save_json()
 
-    def delete_task(self, uid: str) -> None:
+    def delete_task(self, uid: UUID) -> None:
         """
         Удалить задачу
         :param uid: uid задачи
@@ -86,4 +86,4 @@ class ToDoListJson(IToDoList):
         :return: генератор uid, text, done
         """
         for uid, task in self._tasks.items():
-            yield uid, task.text, task.done
+            yield uid, task.description, task.is_completed
