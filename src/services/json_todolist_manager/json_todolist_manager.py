@@ -3,11 +3,11 @@ import os
 from dataclasses import asdict
 from uuid import uuid4, UUID
 
-from src.interfaces.idbmanager import IDBManager
-from src.services.json_db_manager.task_json import TaskJson
+from src.interfaces.itodolistmanager import IToDoListManager
+from src.services.json_todolist_manager.task_json import TaskJson
 
 
-class JsonDBManager(IDBManager):
+class JsonToDoListManager(IToDoListManager):
     """
     Менеджер для работы с to-do листом используя JSON
     """

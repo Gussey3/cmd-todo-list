@@ -1,15 +1,27 @@
 from uuid import UUID
 
 from src.exceptions.todolist_exceptions import TaskNotExistError
-from src.interfaces.idbmanager import IDBManager
+from src.interfaces.itodolistmanager import IToDoListManager
 from src.models.task import Task
 from src.db import SessionLocal
 
 
-class PsqlDBManager(IDBManager):
+class PsqlToDoListManager(IToDoListManager):
     """
     Менеджер для работы с to-do листом используя postgresql
     """
+
+    def get_task(self, uid: UUID) -> Task:
+        """
+        Получить таск по uid
+        :param uid: uid задачи
+        :return: таск
+        """
+        with SessionLocal() as session:
+            task = session.get(Task, uid)
+            if not task:
+                raise TaskNotExistError
+            return task
 
     def add_task(self, text: str) -> Task:
         """

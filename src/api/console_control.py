@@ -5,7 +5,7 @@ from uuid import UUID
 from src.interfaces.iapi import IApi
 
 if TYPE_CHECKING:
-    from src.interfaces.idbmanager import IDBManager
+    from src.interfaces.itodolistmanager import IToDoListManager
 
 
 class ConsoleControl(IApi):
@@ -13,7 +13,7 @@ class ConsoleControl(IApi):
     Менеджер для управления приложением через консоль
     """
 
-    def __init__(self, todo_list: IDBManager) -> None:
+    def __init__(self, todo_list: IToDoListManager) -> None:
         """
         :param todo_list: реализация IToDoList
         """

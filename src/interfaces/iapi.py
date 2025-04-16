@@ -1,13 +1,13 @@
 from abc import ABC, abstractmethod
 
-from src.interfaces.idbmanager import IDBManager
+from src.interfaces.itodolistmanager import IToDoListManager
 
 
 class IApi(ABC):
     """
     Интерфейс взаимодействия с приложением
     """
-    def __init__(self, todo_list: IDBManager) -> None:
+    def __init__(self, todo_list: IToDoListManager) -> None:
         """
         :param todo_list: реализация IToDoList
         """

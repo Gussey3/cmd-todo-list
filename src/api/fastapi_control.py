@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 
 from src.exceptions.todolist_exceptions import TaskNotExistError
 from src.interfaces.iapi import IApi
-from src.interfaces.idbmanager import IDBManager
+from src.interfaces.itodolistmanager import IToDoListManager
 from src.api.routers.todo_router import router
 
 app = FastAPI()
@@ -24,7 +24,7 @@ class FastApiControl(IApi):
     Менеджер для управления приложением через fastapi
     """
 
-    def __init__(self, todo_list: IDBManager) -> None:
+    def __init__(self, todo_list: IToDoListManager) -> None:
         """
         :param todo_list: реализация IToDoList
         """
